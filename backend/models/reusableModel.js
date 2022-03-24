@@ -23,6 +23,11 @@ const reusableSchema = mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         required:true,
         ref:'User'
+    },
+    pickedBy:{
+        type:mongoose.Schema.Types.ObjectId,
+        default:null,
+        ref:'Reuser'
     }
 },{
     timestamps:true

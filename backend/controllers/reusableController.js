@@ -26,8 +26,8 @@ const AddReusable = asyncHandler(async(req,res)=>{
 
 const updateReusableStatus = asyncHandler(async(req,res)=>{
     try{
-        console.log(req.params.id)
-        const reusable = await Reusable.findByIdAndUpdate(req.params.id, {status:"picked"})
+        console.log(req.reuser.id)
+        const reusable = await Reusable.findByIdAndUpdate(req.params.id, {status:"picked", pickedBy:req.reuser.id})
         return res.status(200).json({
             reusable,
             "message":"Reusable has been picked"
@@ -41,4 +41,20 @@ const updateReusableStatus = asyncHandler(async(req,res)=>{
     
 })
 
-module.exports = {GetMyReusables, AddReusable, updateReusableStatus}
+const getMyPickedReusables = asyncHandler(async(req,res)=>{
+    try{
+        console.log(req.reuser)
+        const mypickedreusables = await Reusable.find({pickedBy: req.reuser.id})
+        return res.status(200).json({
+            mypickedreusables,
+        })
+    }
+    catch(error){
+        res.status(500).json({
+            message:"Something went wrong"
+        })
+    }
+    
+})
+
+module.exports = {GetMyReusables, AddReusable, updateReusableStatus,getMyPickedReusables}
